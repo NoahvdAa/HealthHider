@@ -38,6 +38,16 @@ public class HHHandler extends MessageToByteEncoder<Packet<?>> {
         FriendlyByteBuf buf = new FriendlyByteBuf(out);
         ClientboundSetEntityDataPacket packet = (ClientboundSetEntityDataPacket) msg;
 
+        Connection connection = (Connection) ctx.pipeline().get("packet_handler");
+        ServerPlayer player = connection.getPlayer();
+
+        if (packet.id() == player.getId()) {
+            // We don't want to hide our own health
+            this.writeId(ctx, packet, buf);
+            packet.write(buf);
+            return;
+        }
+
         Entity entity = null;
         for (ServerLevel level : server.getAllLevels()) {
             entity = level.getEntityLookup().get(packet.id());
@@ -73,8 +83,6 @@ public class HHHandler extends MessageToByteEncoder<Packet<?>> {
             return;
         }
 
-        Connection connection = (Connection) ctx.pipeline().get("packet_handler");
-        ServerPlayer player = connection.getPlayer();
         if (config.enableBypassPermission() && player.getBukkitEntity().hasPermission("healthider.bypass")) {
             this.writeId(ctx, packet, buf);
             packet.write(buf);
