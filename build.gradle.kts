@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "me.noahvdaa.healthider"
-version = "1.0.0"
+version = "1.0.1"
 
 java {
     // Configure the java toolchain. This allows gradle to auto-provision JDK 17 on systems that only have JDK 8 installed for example.
