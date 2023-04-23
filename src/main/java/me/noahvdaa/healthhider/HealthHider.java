@@ -12,7 +12,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public final class HealthHider extends JavaPlugin {
 
@@ -47,7 +49,7 @@ public final class HealthHider extends JavaPlugin {
             listMode = "blacklist";
         }
 
-        List<EntityType<?>> entities = new ArrayList<>();
+        Set<EntityType<?>> entities = new HashSet<>();
         for (String entityName : config.getStringList("entities")) {
             ResourceLocation key = ResourceLocation.tryParse(entityName);
             if (key == null) {

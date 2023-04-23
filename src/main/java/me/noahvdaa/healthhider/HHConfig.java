@@ -2,7 +2,7 @@ package me.noahvdaa.healthhider;
 
 import net.minecraft.world.entity.EntityType;
 
-import java.util.List;
+import java.util.Set;
 
-public record HHConfig(boolean enableBypassPermission, boolean whitelistMode, List<EntityType<?>> entities) {
+public record HHConfig(boolean enableBypassPermission, boolean whitelistMode, Set<EntityType<?>> entities) {
 }
