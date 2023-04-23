@@ -26,7 +26,7 @@ public final class HealthHider extends JavaPlugin {
 
         this.loadConfig();
 
-        ChannelInitializeListenerHolder.addListener(LISTENER_KEY, (channel) -> channel.pipeline().addAfter("packet_handler", "healthider_handler", new HHHandler(this)));
+        ChannelInitializeListenerHolder.addListener(LISTENER_KEY, (channel) -> channel.pipeline().addBefore("unbundler", "healthider_handler", new HHHandler(this)));
 
         Metrics metrics = new Metrics(this, BSTATS_ID);
         metrics.addCustomChart(new SimplePie("bypass-permission", () -> this.configuration.enableBypassPermission() ? "Yes" : "No"));
@@ -55,7 +55,7 @@ public final class HealthHider extends JavaPlugin {
                 continue;
             }
 
-            EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.get(key);
+            EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.getOptional(key).orElse(null);
             if (type == null) {
                 this.getLogger().warning("Unknown entity type '" + entityName + "'");
                 continue;
