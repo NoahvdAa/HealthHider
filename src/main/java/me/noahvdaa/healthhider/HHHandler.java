@@ -41,7 +41,7 @@ public class HHHandler extends MessageToMessageEncoder<Packet<?>> {
         }
 
         List<SynchedEntityData.DataValue<?>> packed = new ArrayList<>(packet.packedItems());
-        packed.replaceAll(dataValue -> {
+        packed.replaceAll((dataValue) -> {
             if (dataValue.id() == DATA_HEALTH_ID.getId()) {
                 float health = (float) dataValue.value();
                 float shownHealth;
