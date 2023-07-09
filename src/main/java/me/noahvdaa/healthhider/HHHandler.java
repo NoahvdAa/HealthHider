@@ -65,7 +65,7 @@ public class HHHandler extends MessageToMessageEncoder<Packet<?>> {
             return false;
         }
 
-        Entity entity = player.getLevel().getEntityLookup().get(packet.id());
+        Entity entity = player.serverLevel().getEntityLookup().get(packet.id());
 
         if (!(entity instanceof LivingEntity)) {
             // Only living entities have health
