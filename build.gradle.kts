@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "me.noahvdaa.healthider"
-version = "1.0.3"
+version = "1.0.4"
 
 java {
     // Configure the java toolchain. This allows gradle to auto-provision JDK 17 on systems that only have JDK 8 installed for example.
@@ -19,7 +19,7 @@ java {
 dependencies {
     implementation("org.bstats:bstats-bukkit:3.0.0")
 
-    paperDevBundle("1.20.1-R0.1-SNAPSHOT")
+    paperDevBundle("1.20.2-R0.1-SNAPSHOT")
 }
 
 tasks {

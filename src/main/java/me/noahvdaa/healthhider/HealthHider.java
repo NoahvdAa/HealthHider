@@ -11,9 +11,7 @@ import org.bstats.charts.SimplePie;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public final class HealthHider extends JavaPlugin {
@@ -29,6 +27,7 @@ public final class HealthHider extends JavaPlugin {
         this.loadConfig();
 
         ChannelInitializeListenerHolder.addListener(LISTENER_KEY, (channel) -> channel.pipeline().addBefore("unbundler", "healthider_handler", new HHHandler(this)));
+        this.getServer().getPluginManager().registerEvents(new HHListener(), this);
 
         Metrics metrics = new Metrics(this, BSTATS_ID);
         metrics.addCustomChart(new SimplePie("bypass-permission", () -> this.configuration.enableBypassPermission() ? "Yes" : "No"));
