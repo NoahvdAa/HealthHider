@@ -19,7 +19,7 @@ java {
 dependencies {
     implementation("org.bstats:bstats-bukkit:3.0.0")
 
-    paperDevBundle("1.20.2-R0.1-SNAPSHOT")
+    paperDevBundle("1.20.3-R0.1-SNAPSHOT")
 }
 
 tasks {

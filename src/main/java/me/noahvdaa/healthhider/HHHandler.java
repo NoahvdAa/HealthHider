@@ -30,7 +30,7 @@ public class HHHandler extends MessageToMessageEncoder<Packet<?>> {
 
     static {
         try {
-            Field field = Player.class.getDeclaredField("e"); // CHANGE ON UPDATE/MOJMAP
+            Field field = Player.class.getDeclaredField("d"); // CHANGE ON UPDATE/MOJMAP
             field.setAccessible(true);
             DATA_PLAYER_ABSORPTION_ID = (EntityDataAccessor<Float>) field.get(null);
         } catch (ReflectiveOperationException e) {
@@ -50,7 +50,8 @@ public class HHHandler extends MessageToMessageEncoder<Packet<?>> {
         Connection connection = (Connection) ctx.pipeline().get("packet_handler");
         ServerPlayer player = connection.getPlayer();
 
-        if (!shouldObfuscate(player, packet)) {
+        ObfuscationState obfuscationState = getObfuscationState(player, packet);
+        if (!obfuscationState.shouldObfuscate()) {
             out.add(msg);
             return;
         }
@@ -68,7 +69,7 @@ public class HHHandler extends MessageToMessageEncoder<Packet<?>> {
                 }
                 return new SynchedEntityData.DataValue<>(id, EntityDataSerializers.FLOAT, shownHealth);
             }
-            if (id == DATA_PLAYER_ABSORPTION_ID.getId()) {
+            if (obfuscationState == ObfuscationState.OBFUSCATE_PLAYER && id == DATA_PLAYER_ABSORPTION_ID.getId()) {
                 return new SynchedEntityData.DataValue<>(id, EntityDataSerializers.FLOAT, 0F);
             }
 
@@ -78,35 +79,51 @@ public class HHHandler extends MessageToMessageEncoder<Packet<?>> {
         out.add(new ClientboundSetEntityDataPacket(packet.id(), packed));
     }
 
-    private boolean shouldObfuscate(ServerPlayer player, ClientboundSetEntityDataPacket packet) {
+    private ObfuscationState getObfuscationState(ServerPlayer player, ClientboundSetEntityDataPacket packet) {
         if (player == null || packet.id() == player.getId()) {
             // We don't want to hide our own health
-            return false;
+            return ObfuscationState.DONT_OBFUSCATE;
         }
 
         Entity entity = player.serverLevel().getEntityLookup().get(packet.id());
 
         if (!(entity instanceof LivingEntity)) {
             // Only living entities have health
-            return false;
+            return ObfuscationState.DONT_OBFUSCATE;
         }
 
         HHConfig config = plugin.configuration();
         if (config.entities().contains(entity.getType()) != config.whitelistMode()) {
             // We don't need to censor this entity
-            return false;
+            return ObfuscationState.DONT_OBFUSCATE;
         }
 
         if (entity.hasPassenger(player)) {
             // Don't obfuscate the health of the entity we're on
-            return false;
+            return ObfuscationState.DONT_OBFUSCATE;
         }
 
         if (config.enableBypassPermission() && player.getBukkitEntity().hasPermission("healthider.bypass")) {
-            return false;
+            return ObfuscationState.DONT_OBFUSCATE;
         }
 
-        return true;
+        return entity instanceof Player ? ObfuscationState.OBFUSCATE_PLAYER : ObfuscationState.OBFUSCATE;
+    }
+
+    enum ObfuscationState {
+        OBFUSCATE(true),
+        OBFUSCATE_PLAYER(true),
+        DONT_OBFUSCATE(false);
+
+        private final boolean shouldObfuscate;
+
+        ObfuscationState(boolean shouldObfuscate) {
+            this.shouldObfuscate = shouldObfuscate;
+        }
+
+        public boolean shouldObfuscate() {
+            return shouldObfuscate;
+        }
     }
 
 }
