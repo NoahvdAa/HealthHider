@@ -4,7 +4,7 @@ plugins {
     `java-library`
     id("io.papermc.paperweight.userdev") version "1.4.0"
     id("xyz.jpenilla.run-paper") version "2.0.1"
-    id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
+    id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
@@ -53,6 +53,7 @@ bukkit {
     apiVersion = "1.20"
     authors = listOf("NoahvdAa")
     website = "https://github.com/NoahvdAa/HealthHider"
+    foliaSupported = true
     permissions.create("healthider.bypass") {
         default = BukkitPluginDescription.Permission.Default.FALSE
     }
