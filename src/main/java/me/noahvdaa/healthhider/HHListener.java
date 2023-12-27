@@ -27,7 +27,6 @@ public class HHListener implements Listener {
             new SynchedEntityData.DataValue<>(DATA_HEALTH_ID.getId(), EntityDataSerializers.FLOAT, entity.getHandle().getHealth())
         ));
         player.getHandle().connection.send(packet);
-
     }
 
 }
