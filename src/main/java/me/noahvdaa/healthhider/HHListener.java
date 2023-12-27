@@ -3,8 +3,8 @@ package me.noahvdaa.healthhider;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -27,7 +27,6 @@ public class HHListener implements Listener {
             new SynchedEntityData.DataValue<>(DATA_HEALTH_ID.getId(), EntityDataSerializers.FLOAT, entity.getHandle().getHealth())
         ));
         player.getHandle().connection.send(packet);
-
     }
 
 }
