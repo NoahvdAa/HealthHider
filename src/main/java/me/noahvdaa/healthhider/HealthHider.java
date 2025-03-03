@@ -26,7 +26,7 @@ public final class HealthHider extends JavaPlugin {
 
         this.loadConfig();
 
-        ChannelInitializeListenerHolder.addListener(LISTENER_KEY, (channel) -> channel.pipeline().addBefore("unbundler", "healthider_handler", new HHHandler(this)));
+        ChannelInitializeListenerHolder.addListener(LISTENER_KEY, (channel) -> channel.pipeline().addAfter("packet_handler", "healthhider", new HHHandler(this)));
         this.getServer().getPluginManager().registerEvents(new HHListener(), this);
 
         Metrics metrics = new Metrics(this, BSTATS_ID);

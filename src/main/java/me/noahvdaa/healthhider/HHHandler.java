@@ -30,7 +30,7 @@ public class HHHandler extends MessageToMessageEncoder<Packet<?>> {
 
     static {
         try {
-            Field field = Player.class.getDeclaredField("d"); // CHANGE ON UPDATE/MOJMAP
+            Field field = Player.class.getDeclaredField("DATA_PLAYER_ABSORPTION_ID");
             field.setAccessible(true);
             DATA_PLAYER_ABSORPTION_ID = (EntityDataAccessor<Float>) field.get(null);
         } catch (ReflectiveOperationException e) {
@@ -59,7 +59,7 @@ public class HHHandler extends MessageToMessageEncoder<Packet<?>> {
         List<SynchedEntityData.DataValue<?>> packed = new ArrayList<>(packet.packedItems());
         packed.replaceAll((dataValue) -> {
             int id = dataValue.id();
-            if (id == DATA_HEALTH_ID.getId()) {
+            if (id == DATA_HEALTH_ID.id()) {
                 float health = (float) dataValue.value();
                 float shownHealth;
                 if (health <= 0.0F) {
@@ -69,7 +69,7 @@ public class HHHandler extends MessageToMessageEncoder<Packet<?>> {
                 }
                 return new SynchedEntityData.DataValue<>(id, EntityDataSerializers.FLOAT, shownHealth);
             }
-            if (obfuscationState == ObfuscationState.OBFUSCATE_PLAYER && id == DATA_PLAYER_ABSORPTION_ID.getId()) {
+            if (obfuscationState == ObfuscationState.OBFUSCATE_PLAYER && id == DATA_PLAYER_ABSORPTION_ID.id()) {
                 return new SynchedEntityData.DataValue<>(id, EntityDataSerializers.FLOAT, 0F);
             }
 
@@ -85,7 +85,7 @@ public class HHHandler extends MessageToMessageEncoder<Packet<?>> {
             return ObfuscationState.DONT_OBFUSCATE;
         }
 
-        Entity entity = player.serverLevel().getEntityLookup().get(packet.id());
+        Entity entity = player.serverLevel().moonrise$getEntityLookup().get(packet.id());
 
         if (!(entity instanceof LivingEntity)) {
             // Only living entities have health
