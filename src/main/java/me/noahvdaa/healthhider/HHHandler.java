@@ -85,7 +85,7 @@ public class HHHandler extends MessageToMessageEncoder<Packet<?>> {
             return ObfuscationState.DONT_OBFUSCATE;
         }
 
-        Entity entity = player.serverLevel().moonrise$getEntityLookup().get(packet.id());
+        Entity entity = player.level().moonrise$getEntityLookup().get(packet.id());
 
         if (!(entity instanceof LivingEntity)) {
             // Only living entities have health
