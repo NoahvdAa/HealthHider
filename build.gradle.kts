@@ -25,6 +25,9 @@ dependencies {
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
 tasks {
+    assemble {
+        dependsOn(shadowJar)
+    }
     compileJava {
         options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
 
